@@ -1,0 +1,10 @@
+{
+  "id": "4321DRebooter",
+  "name": "4321DRebooter",
+  "description": "Automatic rebooting of 4321D audio devices",
+  "disabled": false,
+  "provider": "python",
+  "scope": "",
+  "script": "index.py",
+  "envvars": {}
+}
