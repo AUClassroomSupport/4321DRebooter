@@ -1,9 +1,27 @@
 from mojo import context
 from svsitcpsender import SVSiTCPSend
-context.log.info('Resetting 4321D')
+import datetime
 
-if SVSiTCPSend("192.168.0.40", "setSettings:reboot:reboot"):
-    context.log.info('Success!')
+context.log.info('4321DRebooter Script Running!')
+
+# Device List: list of 4321D IPs to reboot
+deviceList = []
+deviceList.append("192.168.0.40")
+
+# minTick - called every minute
+# see https://docs.python.org/3.6/library/datetime.html#strftime-strptime-behavior
+def minTick(e):
+    if datetime.datetime.now().strftime("%w") == "0": # if day is Sunday (0)
+        if datetime.datetime.now().strftime("%H%M") == "0100": # If Time is 1AM
+            context.log.info("Its Sunday at 1am, rebooting 4321Ds")
+            for ip in deviceList:
+                if SVSiTCPSend(ip, "setSettings:reboot:reboot"):
+                    context.log.info('Success!')
+
+# Timer Setup
+rebootTimer = context.services.get("timeline")
+rebootTimer.start([60000],True,-1) # Runs until killed
+rebootTimer.expired.listen(minTick)
 
 # leave this as the last line in the Python script
 context.run(globals())
