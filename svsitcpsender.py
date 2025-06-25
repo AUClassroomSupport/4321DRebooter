@@ -2,8 +2,6 @@
 from socket import *
 from mojo import context
 
-context.log.info('Sample Python program')
-
 def SVSiTCPSend(ip, str):
     context.log.info('SVSi TCP Send Activated! Sending {} to {}'.format(str, ip))
 
